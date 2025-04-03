@@ -1,9 +1,25 @@
+"use client";
+
 import Image from "next/image";
+import Button from "../components/Button";
+import { useGsapAnimations } from "./hooks/useGsapAnimations";
+import FloatingGlass from "../components/FloatingGlass";
+import Nav from "../components/Nav";
+import Hero from "../components/Hero";
 
 export default function Home() {
+  useGsapAnimations();
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="bg-black p-1 py-2">
+      <Nav />
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start bg-white">
+        <Hero />
+        <div className="flex gap-4">
+          <div className="w-16 h-16 bg-brand-gray-1 rounded-lg"></div>
+          <div className="w-16 h-16 bg-brand-gray-2 rounded-lg"></div>
+        </div>
+        <Button>Click me</Button>
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -24,6 +40,16 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
+        <div className="max-w-4xl w-full space-y-12 bg-amber-200 p-10">
+          <FloatingGlass />
+        </div>
+        <section className="fade-in text-[--color-purple-3] text-4xl font-ondo font-medium">
+          Fade me in on scroll
+        </section>
+
+        <section className="slide-left text-[--color-blue-3] text-2xl font-ondo">
+          Slide me in from the left
+        </section>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
@@ -51,7 +77,7 @@ export default function Home() {
           </a>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center bg-white rounded-b-2xl">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"

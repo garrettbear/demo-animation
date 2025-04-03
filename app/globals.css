@@ -1,21 +1,119 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Ondo Sans";
+  src: url("/fonts/792c679141990e90-s.p.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
+@font-face {
+  font-family: "Ondo Sans";
+  src: url("/fonts/c85e73e9a1c57828-s.p.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Fonts */
+  --font-ondo: "Ondo Sans", sans-serif;
+
+  /* Colors */
+  --background: #ffffff;
+  --foreground: #000000;
+
+  /* Grayscale */
+  --gray-1: #f0f0f0;
+  --gray-2: #dadada;
+  --gray-3: #a7a8a8;
+  --gray-4: #626262;
+  --gray-5: #272727;
+  --gray-6: #181818;
+
+  /* Orange */
+  --orange-1: #e7deda;
+  --orange-2: #ffb993;
+  --orange-3: #ff975f;
+  --orange-4: #ee7839;
+  --orange-5: #964722;
+  --orange-6: #3e2215;
+
+  /* Green */
+  --green-1: #d3dac9;
+  --green-2: #5bc396;
+  --green-3: #1da66a;
+  --green-4: #007140;
+  --green-5: #004829;
+  --green-6: #002314;
+
+  /* Purple */
+  --purple-1: #e9dcff;
+  --purple-2: #d4a5ff;
+  --purple-3: #be78ff;
+  --purple-4: #8f3bdb;
+  --purple-5: #450d78;
+  --purple-6: #1f0438;
+
+  /* Blue */
+  --blue-1: #b1cfff;
+  --blue-2: #82abed;
+  --blue-3: #557bb7;
+  --blue-4: #2d599f;
+  --blue-5: #1f3f71;
+  --blue-6: #102038;
+
+  /* Red */
+  --red-1: #ff6f6f;
+}
+
+/* Map to Tailwind theme tokens */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-ondo: var(--font-ondo);
+
+  --color-brand-gray-1: var(--gray-1);
+  --color-brand-gray-2: var(--gray-2);
+  --color-brand-gray-3: var(--gray-3);
+  --color-brand-gray-4: var(--gray-4);
+  --color-brand-gray-5: var(--gray-5);
+  --color-brand-gray-6: var(--gray-6);
+
+  --color-brand-orange-1: var(--orange-1);
+  --color-brand-orange-2: var(--orange-2);
+  --color-brand-orange-3: var(--orange-3);
+  --color-brand-orange-4: var(--orange-4);
+  --color-brand-orange-5: var(--orange-5);
+  --color-brand-orange-6: var(--orange-6);
+
+  --color-brand-green-1: var(--green-1);
+  --color-brand-green-2: var(--green-2);
+  --color-brand-green-3: var(--green-3);
+  --color-brand-green-4: var(--green-4);
+  --color-brand-green-5: var(--green-5);
+  --color-brand-green-6: var(--green-6);
+
+  --color-brand-purple-1: var(--purple-1);
+  --color-brand-purple-2: var(--purple-2);
+  --color-brand-purple-3: var(--purple-3);
+  --color-brand-purple-4: var(--purple-4);
+  --color-brand-purple-5: var(--purple-5);
+  --color-brand-purple-6: var(--purple-6);
+
+  --color-brand-blue-1: var(--blue-1);
+  --color-brand-blue-2: var(--blue-2);
+  --color-brand-blue-3: var(--blue-3);
+  --color-brand-blue-4: var(--blue-4);
+  --color-brand-blue-5: var(--blue-5);
+  --color-brand-blue-6: var(--blue-6);
+
+  --color-brand-red-1: var(--red-1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #ffffff;
   }
 }
 
