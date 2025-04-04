@@ -1,10 +1,27 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import React from "react";
+import { createPortal } from "react-dom";
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  arrow,
+  useHover,
+  useInteractions,
+  FloatingArrow,
+  Placement,
+} from "@floating-ui/react";
 
 interface PopoverProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
   className?: string;
+  referenceElement: HTMLElement | null;
+  placement?: Placement;
 }
 
 export default function Popover({
@@ -12,44 +29,74 @@ export default function Popover({
   onClose,
   children,
   className = "",
+  referenceElement,
+  placement = "top",
 }: PopoverProps) {
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const arrowRef = React.useRef(null);
+  const [mounted, setMounted] = React.useState(false);
 
-  useEffect(() => {
-    if (!isOpen) return;
+  React.useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: (open) => {
+      if (!open) onClose();
+    },
+    placement,
+    middleware: [
+      offset(12),
+      flip({
+        fallbackPlacements: ["top", "bottom", "left", "right"],
+        fallbackStrategy: "bestFit",
+      }),
+      shift({
+        padding: 8,
+        crossAxis: true,
+      }),
+      arrow({
+        element: arrowRef,
+      }),
+    ],
+    whileElementsMounted: autoUpdate,
+    elements: {
+      reference: referenceElement,
+    },
+  });
 
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
+  const hover = useHover(context);
+  const { getFloatingProps } = useInteractions([hover]);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
+  if (!isOpen || !mounted) return null;
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  return (
+  const content = (
     <div
-      ref={popoverRef}
-      className={`bg-brand-gray-1 rounded-xl border border-gray-100/10 ${className}`}
+      ref={refs.setFloating}
+      style={{
+        ...floatingStyles,
+        zIndex: 1000,
+        position: "absolute",
+      }}
+      {...getFloatingProps()}
+      className={className}
     >
-      {children}
+      <div className="bg-brand-gray-6 text-white rounded-xl p-6 relative">
+        <FloatingArrow
+          ref={arrowRef}
+          context={context}
+          className="fill-brand-gray-6"
+          width={12}
+          height={6}
+        />
+        {children}
+      </div>
     </div>
   );
+
+  const portalContainer = document.getElementById("popover-container");
+  if (!portalContainer) return content;
+
+  return createPortal(content, portalContainer);
 }

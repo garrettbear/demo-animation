@@ -21,9 +21,10 @@ const GridSquare = ({
   controls: AnimationControls;
 }) => (
   <div className="relative w-full h-full">
-    {/* Empty square outline */}
+    {/* Background square */}
     <div className="absolute inset-0 bg-brand-gray-1 rounded-xl" />
-    {/* Filling square */}
+
+    {/* Animated overlay square */}
     <motion.div
       className="absolute inset-0 bg-white rounded-xl"
       initial={{ scale: 0 }}
@@ -63,14 +64,13 @@ export default function AnimatedBackground({
     }
   }, [isInView, controls]);
 
-  // Create grid of squares
   const rows = 8;
   const cols = 8;
   const squares = [];
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      const index = j + i * 0.5; // Calculate delay index based on position
+      const index = j + i * 0.5;
       squares.push(
         <div key={`${i}-${j}`} className="relative aspect-square">
           <GridSquare index={index} controls={controls} />
@@ -85,7 +85,10 @@ export default function AnimatedBackground({
       className={`relative overflow-hidden ${className}`}
       initial="hidden"
     >
+      {/* Background layer */}
       <div className="absolute inset-0 bg-white" />
+
+      {/* Grid container */}
       <div
         className="absolute inset-0 grid"
         style={{
@@ -96,6 +99,8 @@ export default function AnimatedBackground({
       >
         {squares}
       </div>
+
+      {/* Content layer */}
       <div className="relative z-10">{children}</div>
     </motion.div>
   );

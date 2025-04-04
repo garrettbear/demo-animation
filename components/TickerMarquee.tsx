@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { useAnimationFrame } from "framer-motion";
-import Popover from "../components/Popover";
+import Popover from "./Popover";
 
 const assets = [
   { symbol: "onTSLA", price: "$168.32", delta: "+1.2%" },
@@ -21,69 +21,61 @@ const TickerItem = ({
   onHoverChange: (isHovered: boolean) => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  const handleHover = (hovered: boolean) => {
+    setIsHovered(hovered);
+    onHoverChange(hovered);
+  };
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => {
-        setIsHovered(true);
-        onHoverChange(true);
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        onHoverChange(false);
-      }}
-    >
-      <div className="flex items-center gap-3 text-sm font-medium bg-brand-gray-1 px-4 py-2 rounded-full cursor-pointer transition-all group hover:bg-neutral-800">
-        <span className="group-hover:text-white transition-colors">
-          {asset.symbol}
-        </span>
-        <span className="text-brand-gray-4 group-hover:text-brand-gray-2 transition-colors">
-          {asset.price}
-        </span>
-        <span
-          className={`transition-colors ${
-            asset.delta.startsWith("+")
-              ? "text-green-600 group-hover:text-green-400"
-              : "text-red-600 group-hover:text-red-400"
-          }`}
-        >
-          {asset.delta}
-        </span>
+    <div className="relative" ref={itemRef}>
+      <div
+        className="flex flex-col justify-center text-white text-sm font-medium bg-neutral-900 p-6 aspect-square rounded-2xl shadow cursor-pointer hover:bg-neutral-800 transition-colors"
+        onMouseEnter={() => handleHover(true)}
+        onMouseLeave={() => handleHover(false)}
+      >
+        <h4 className="text-xl font-medium">{asset.symbol}</h4>
+        <div className="flex justify-between gap-4">
+          <span className="text-gray-400">{asset.price}</span>
+          <span
+            className={`${
+              asset.delta.startsWith("+") ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {asset.delta}
+          </span>
+        </div>
       </div>
-      {isHovered && (
-        <Popover
-          isOpen={isHovered}
-          onClose={() => {
-            setIsHovered(false);
-            onHoverChange(false);
-          }}
-          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 min-w-[300px]"
-        >
-          <div className="p-6">
-            <h3 className="text-xl font-medium mb-3">{asset.symbol} Details</h3>
-            <p className="text-gray-600 text-base mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt.
+      <Popover
+        isOpen={isHovered}
+        onClose={() => handleHover(false)}
+        referenceElement={itemRef.current}
+        placement="top"
+      >
+        <div className="max-w-sm">
+          <h3 className="text-xl font-medium mb-3">{asset.symbol} Details</h3>
+          <p className="text-brand-gray-3 text-base mb-4">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt.
+          </p>
+          <div className="space-y-2">
+            <p className="text-lg">Current Price: {asset.price}</p>
+            <p className="text-lg">
+              24h Change:{" "}
+              <span
+                className={
+                  asset.delta.startsWith("+")
+                    ? "text-green-600"
+                    : "text-red-600"
+                }
+              >
+                {asset.delta}
+              </span>
             </p>
-            <div className="space-y-2">
-              <p className="text-lg">Current Price: {asset.price}</p>
-              <p className="text-lg">
-                24h Change:{" "}
-                <span
-                  className={
-                    asset.delta.startsWith("+")
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }
-                >
-                  {asset.delta}
-                </span>
-              </p>
-            </div>
           </div>
-        </Popover>
-      )}
+        </div>
+      </Popover>
     </div>
   );
 };
@@ -95,7 +87,7 @@ export default function TickerMarquee() {
 
   useAnimationFrame((_, delta) => {
     if (!marqueeRef.current || isPaused) return;
-    x.current -= delta * 0.05; // adjust speed here
+    x.current -= delta * 0.05;
     marqueeRef.current.style.transform = `translateX(${x.current}px)`;
     if (marqueeRef.current.offsetWidth + x.current <= 0) {
       x.current = 0;
@@ -105,16 +97,24 @@ export default function TickerMarquee() {
   return (
     <div className="relative w-full py-4">
       <div
-        ref={marqueeRef}
-        className="flex gap-8 whitespace-nowrap will-change-transform"
-      >
-        {[...assets, ...assets].map((asset, i) => (
-          <TickerItem
-            key={`${asset.symbol}-${i}`}
-            asset={asset}
-            onHoverChange={setIsPaused}
-          />
-        ))}
+        id="popover-container"
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 100 }}
+      />
+
+      <div className="relative overflow-hidden">
+        <div
+          ref={marqueeRef}
+          className="flex gap-8 whitespace-nowrap will-change-transform"
+        >
+          {[...assets, ...assets].map((asset, i) => (
+            <TickerItem
+              key={`${asset.symbol}-${i}`}
+              asset={asset}
+              onHoverChange={setIsPaused}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

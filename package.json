@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.6",
     "@react-three/drei": "^10.0.5",
     "@react-three/fiber": "^9.1.1",
     "@use-gesture/react": "^10.3.1",
