@@ -4,7 +4,7 @@ import { useGsapAnimations } from "./hooks/useGsapAnimations";
 import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import CashEq from "../components/CashEq";
-
+import TickerMarquee from "../components/TickerMarquee";
 export default function Home() {
   useGsapAnimations();
 
@@ -16,9 +16,10 @@ export default function Home() {
           <Hero />
         </section>
         <CashEq />
+        <TickerMarquee />
       </main>
-      <footer className="bg-white rounded-b-2xl text-center text-sm pt-4 pb-2">
-        <p>© 2025 Ondo. All rights reserved.</p>
+      <footer className="bg-white rounded-b-2xl text-black text-center text-sm pt-4 pb-2">
+        <p>© {new Date().getFullYear()} Demo. All rights reserved.</p>
       </footer>
     </div>
   );
