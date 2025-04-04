@@ -1,4 +1,3 @@
-// components/GMTickerMarquee.tsx
 "use client";
 
 import React, { useRef } from "react";
