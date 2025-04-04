@@ -4,7 +4,7 @@ import Button from "./Button";
 
 const Nav: FC = () => {
   return (
-    <nav className="grid grid-cols-3 items-center justify-between px-6 py-4 bg-white rounded-t-2xl">
+    <nav className="absolute top-0 left-0 right-0 w-full z-10 grid grid-cols-3 items-center justify-between px-6 py-4">
       {/* Left: Logo */}
       <div className="flex items-center space-x-2">
         <Logo className="w-[20vw] md:w-[10vw] h-auto" />

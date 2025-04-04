@@ -3,9 +3,9 @@ import { SVGProps } from "react";
 const Logo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 853 256" // Keep this for aspect ratio
+    viewBox="0 0 853 256"
     fill="none"
-    className="h-6 w-auto" // Responsive by default, can override via props
+    className="h-6 w-auto"
     {...props}
   >
     <path

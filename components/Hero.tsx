@@ -1,31 +1,61 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
 import Button from "./Button";
 import FloatingGlass from "./FloatingGlass";
 
 const Hero = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div className="space-y-6">
-          <h1 className="text-4xl md:text-6xl font-ondo font-medium">
-            Ondo Tokenized Assets
-          </h1>
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="absolute inset-0">
+        <FloatingGlass />
+      </div>
 
-          <p className="text-md text-brand-gray-3">
+      <div className="relative z-10 w-full md:w-2/5 flex items-center justify-center min-h-screen">
+        <motion.div
+          initial={{ scale: 0.7, opacity: 0, originX: 0, originY: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.1, ease: [0.33, 1, 0.68, 1] }}
+          className="space-y-6 pl-16"
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="text-4xl md:text-6xl font-ondo font-medium"
+          >
+            Ondo Tokenized Assets
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="text-md text-brand-gray-4"
+          >
             Some well written copy here that describes the various types of
             tokens that Ondo offers. There are Cash Equivalent tokens (USDY,
             OUSG) and there are tokenized equities (Stocks, ETFs).
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Button>View GM Assets</Button>
-            <Button>View CE Assets</Button>
+          <div className="flex gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.5 }}
+            >
+              <Button>View GM Assets</Button>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
+              <Button>View CE Assets</Button>
+            </motion.div>
           </div>
-        </div>
-
-        <div className="bg-gray-200 rounded-lg aspect-square flex items-center justify-center p-5 max-h-[50vh]">
-          <FloatingGlass />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -2,27 +2,33 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshTransmissionMaterial, Text, RoundedBox } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
-import { useDrag } from "@use-gesture/react";
 
 function GlassBox() {
   const ref = useRef<THREE.Mesh>(null);
-  const [rotation, setRotation] = useState<[number, number]>([0.1, 0.3]);
   const idleTime = useRef(0);
 
-  useFrame((_, delta) => {
+  useFrame(({ pointer }, delta) => {
     idleTime.current += delta;
-    const y = Math.sin(idleTime.current * 2) * 0.08;
-    if (ref.current) {
-      ref.current.rotation.x = rotation[0];
-      ref.current.rotation.y = rotation[1];
-      ref.current.position.y = y - 0.5;
-    }
-  });
+    const floatY = Math.sin(idleTime.current * 2) * 0.08;
 
-  const bind = useDrag(({ offset: [x, y] }) => {
-    setRotation([0.1 + y / 80, 0.3 + x / 80]);
+    const targetX = THREE.MathUtils.clamp(pointer.y * 0.3, -0.15, 0.15);
+    const targetY = THREE.MathUtils.clamp(pointer.x * 0.4, -0.2, 0.2);
+
+    if (ref.current) {
+      ref.current.rotation.x = THREE.MathUtils.lerp(
+        ref.current.rotation.x,
+        targetX,
+        0.1
+      );
+      ref.current.rotation.y = THREE.MathUtils.lerp(
+        ref.current.rotation.y,
+        targetY,
+        0.1
+      );
+      ref.current.position.y = floatY + -1.1;
+    }
   });
 
   return (
@@ -31,22 +37,21 @@ function GlassBox() {
       args={[3, 3, 0.02]}
       radius={0.25}
       smoothness={10}
-      position={[1.1, 2.1, 0]}
-      {...bind()}
+      position={[1.3, 0, 0]}
     >
       <MeshTransmissionMaterial
-        backside
-        thickness={1}
         transmission={1}
-        roughness={0.025}
+        backside
+        thickness={0.1}
+        roughness={0.01}
         clearcoat={1}
-        chromaticAberration={0.2}
-        distortion={0.4}
+        chromaticAberration={0.35}
+        distortion={0.15}
         distortionScale={0.2}
-        temporalDistortion={0.15}
-        anisotropy={0.2}
+        temporalDistortion={0.05}
+        anisotropy={0.3}
         envMapIntensity={0}
-        background={new THREE.Color("#ffffff")}
+        background={new THREE.Color("#d3dac9")}
       />
     </RoundedBox>
   );
@@ -56,17 +61,15 @@ function Scene() {
   return (
     <>
       <Text
-        position={[-0, 0, -0.5]}
+        position={[0, -0.5, -0.5]}
         fontSize={4}
-        color="black"
+        color="#002314"
         anchorX="center"
         anchorY="middle"
       >
-        2
+        $
       </Text>
 
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[5, 5, 5]} intensity={0.7} />
       <GlassBox />
     </>
   );
@@ -74,8 +77,8 @@ function Scene() {
 
 export default function FloatingGlass() {
   return (
-    <div className="relative w-full h-full bg-white overflow-hidden rounded-2xl">
-      <Canvas camera={{ position: [2, 2, 4], fov: 30 }}>
+    <div className="absolute inset-0 w-full h-full">
+      <Canvas camera={{ position: [2, 2, 4], fov: 30, zoom: 1 }}>
         <Scene />
       </Canvas>
     </div>
