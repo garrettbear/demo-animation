@@ -4,7 +4,6 @@ import { useGsapAnimations } from "./hooks/useGsapAnimations";
 import Nav from "../components/Nav";
 import Hero from "../components/Hero";
 import CashEq from "../components/CashEq";
-import BackgroundGrid from "@/components/BackgroundGrid";
 
 export default function Home() {
   useGsapAnimations();
