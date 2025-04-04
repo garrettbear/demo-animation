@@ -6,7 +6,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ExpandingCard() {
+interface ExpandingCardProps {
+  title: string;
+  content: string;
+  index: number;
+}
+
+export default function ExpandingCard({
+  title,
+  content,
+  index,
+}: ExpandingCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +51,10 @@ export default function ExpandingCard() {
       ref={cardRef}
       className="bg-brand-blue-1 rounded-xl mx-auto mt-40"
       style={{ width: "100px", height: "100px" }}
-    />
+      id={`card-${index}`}
+    >
+      <h3 className="text-xl font-bold mb-2 opacity-0">{title}</h3>
+      <p className="text-sm text-gray-600 opacity-0">{content}</p>
+    </div>
   );
 }
